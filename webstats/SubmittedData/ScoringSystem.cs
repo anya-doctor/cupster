@@ -24,11 +24,11 @@ namespace SubmittedData
 			public const int StageOneMatchOutcome = 1;
 			public const int QualifyingTeam = 2;
 			public const int QualifyingPosition = 2;
-			public const int Round16Winner = 4;
-			public const int QuarterFinalWinner = 8;
-			public const int SemiFinalWinner = 16;
-			public const int BronseFinalWinner = 16;
-			public const int FinalWinner = 32;
+			public const int Round16Winner = 2;
+			public const int QuarterFinalWinner = 4;
+			public const int SemiFinalWinner = 8;
+			public const int BronseFinalWinner = 8;
+			public const int FinalWinner = 16;
 		}
 		
         public ScoringSystem(IResults user, IResults actual)
@@ -112,7 +112,6 @@ namespace SubmittedData
                     if (team != "-" && Array.IndexOf(_actual.GetRound16Winners(), team) != -1)
     					score += Points.Round16Winner;
                 }
-    
             }            
             return score;
         }
