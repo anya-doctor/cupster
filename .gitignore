@@ -278,4 +278,6 @@ webstats/webstats.userprefs
 testrunner/
 
 nuget.exe
+.pytest_cache/
 /webstats/.vs/webstats/v15/Server/sqlite3
+.vscode/
