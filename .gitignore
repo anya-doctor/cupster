@@ -278,3 +278,5 @@ webstats/webstats.userprefs
 testrunner/
 
 nuget.exe
+.pytest_cache/
+.vscode/
