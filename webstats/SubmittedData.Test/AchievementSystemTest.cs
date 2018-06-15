@@ -311,5 +311,43 @@ final = ""Tyskland""
 		    var a = new AchievementSystem(user, actual);
 		    a.Achievements.ShouldContain(a.AchievementRepo[AchievementTypes.Gold]);
         }
+        
+        [Test]
+        public void TestAchivements_ShouldContainFullPot_WhenScoreIsMax()
+        {
+            
+            string userBet = @"[stage-one]
+winners = [ [ ""Germany"", ""Algerie"",], ]
+results = [ [ ] ]
+";
+            string actualResults = @"[stage-one]
+winners = [ [ ""Germany"", ""Algerie"",], ]
+results = [ [ ] ]
+";
+            var user = new Results(userBet.ParseAsToml());
+            var actual = new Results(actualResults.ParseAsToml());
+
+            var a = new AchievementSystem(user, actual);
+            a.Achievements.ShouldContain(a.AchievementRepo[AchievementTypes.FullPot]);
+        }
+
+        [Test]
+        public void TestAchivements_ShouldNotContainFullPot_WhenScoreIsLessThanMax()
+        {
+            
+            string userBet = @"[stage-one]
+winners = [ [ ""Germany"", ""Algerie"",], ]
+results = [ [ ] ]
+";
+            string actualResults = @"[stage-one]
+winners = [ [ ""Mexico"", ""Algerie"",], ]
+results = [ [ ] ]
+";
+            var user = new Results(userBet.ParseAsToml());
+            var actual = new Results(actualResults.ParseAsToml());
+
+            var a = new AchievementSystem(user, actual);
+            a.Achievements.ShouldNotContain(a.AchievementRepo[AchievementTypes.FullPot]);
+        }
     }
 }

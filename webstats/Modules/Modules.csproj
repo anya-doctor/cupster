@@ -76,6 +76,9 @@
     <None Include="Content\double-rainbow.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Content\full-pot.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Content\gold.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

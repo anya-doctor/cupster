@@ -22,6 +22,7 @@ namespace SubmittedData
         Bronze,
         Silver,
         Gold,
+        FullPot,
     }
         
     /// <summary>
@@ -45,6 +46,7 @@ namespace SubmittedData
             CheckBronzeMedal();
             CheckSilverMedal();
             CheckGoldMedal();
+            CheckFullPot();
         }
 
         List<Achievement> _achievements = new List<Achievement>();
@@ -213,7 +215,17 @@ namespace SubmittedData
                     _achievements.Add(_achievementsRepo[AchievementTypes.Gold]);
             }
         }
-		
+
+        void CheckFullPot()
+        {
+            var u = new ScoringSystem(_user, _actual);
+            var r = new ScoringSystem(_actual, _actual);
+            
+            if (u.GetTotal() == r.GetTotal())
+                _achievements.Add(_achievementsRepo[AchievementTypes.FullPot]);
+                
+        }
+        
         void CheckPerfectGroup()
         {
         }
@@ -259,6 +271,11 @@ namespace SubmittedData
                 new Achievement() {
                     Image = "gold.png",
                     Title = "Gold medal: Correct winner of tournament"
+                });
+            _achievementsRepo.Add(AchievementTypes.FullPot,
+                new Achievement() {
+                    Image = "full-pot.png",
+                    Title = "Full pot: Perfect score so far"
                 });
         }
 		
