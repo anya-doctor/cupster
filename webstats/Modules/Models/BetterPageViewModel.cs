@@ -414,7 +414,11 @@ namespace Modules
             }
             if (_results.HasSemiFinals())
             {
-                k.ActualMatch = _results.GetBronseFinalists()[0] + " vs. " + _results.GetBronseFinalists()[1];
+                var bf = _results.GetBronseFinalists();
+                if (bf.Count > 0)
+                    k.ActualMatch = _results.GetBronseFinalists()[0] + " vs. " + _results.GetBronseFinalists()[1];
+                else
+                    k.ActualMatch = "- vs. -";
                 if (_results.HasBronseFinal())
                 {
                     k.ActualWinner = _results.GetBronseFinalWinner();
