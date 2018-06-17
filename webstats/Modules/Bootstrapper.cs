@@ -43,7 +43,7 @@ namespace Modules
             bets.LoadAll(dataPath);
             container.Register<ISubmittedBets, SubmittedBets>(bets);
 
-            if (!string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["LiveResultsUrl"]) ||
+            if (!string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["LiveResultsUrl"]) &&
                 !string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["LiveResultsInterval"]))
             {
                 RegisterLiveResultsCollection(container, tournament);

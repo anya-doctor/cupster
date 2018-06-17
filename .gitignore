@@ -279,5 +279,6 @@ testrunner/
 
 nuget.exe
 .pytest_cache/
-/webstats/.vs/webstats/v15/Server/sqlite3
+/webstats/.vs/*
 .vscode/
+/data/wc2018-Anders.toml

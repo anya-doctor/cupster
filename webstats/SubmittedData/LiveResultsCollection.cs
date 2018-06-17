@@ -46,7 +46,7 @@ namespace SubmittedData
             {
                 Current.Load(null);
             }
-            catch
+            catch 
             {
                 Current.Copy(Previous);
             }
