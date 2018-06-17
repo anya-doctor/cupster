@@ -3,8 +3,8 @@ namespace SubmittedData
 {
 	public interface IResultCollection
 	{
-		Results Current { get; set; }
-		Results Previous { get; set; }
+		IResults Current { get; set; }
+		IResults Previous { get; set; }
 	}
 }
 

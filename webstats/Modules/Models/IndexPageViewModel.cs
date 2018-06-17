@@ -25,7 +25,7 @@ namespace Modules
 			Same
 		}
 
-		public IndexPageViewModel(ITournament t, ISubmittedBets sb, IResultCollection rc)
+		public IndexPageViewModel(ITournament t, ISubmittedBets sb, ILiveResultsCollection rc)
 		{
 			_tournament = t;
 			CreateGroups();

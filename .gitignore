@@ -278,3 +278,4 @@ webstats/webstats.userprefs
 testrunner/
 
 nuget.exe
+/webstats/.vs/webstats/v15/Server/sqlite3

@@ -18,7 +18,7 @@ namespace Modules
 	/// </summary>
 	public class LegendPageModule : NancyModule
 	{
-		public LegendPageModule(IResultCollection rc)
+		public LegendPageModule(ILiveResultsCollection rc)
 		{
 			Get["/legend"] = _ => 
             {

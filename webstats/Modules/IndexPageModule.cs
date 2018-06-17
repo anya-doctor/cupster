@@ -18,7 +18,7 @@ namespace Modules
 	/// </summary>
 	public class IndexPageModule : NancyModule
 	{
-		public IndexPageModule(ITournament tournament, ISubmittedBets bets, IResultCollection rc)
+		public IndexPageModule(ITournament tournament, ISubmittedBets bets, ILiveResultsCollection rc)
 		{
 			Get["/"] = _ => 
             {

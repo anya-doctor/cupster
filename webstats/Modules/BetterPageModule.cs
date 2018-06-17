@@ -10,7 +10,7 @@ namespace Modules
 {
     public class BetterPageModule : NancyModule
     {
-		public BetterPageModule(ITournament tournament, ISubmittedBets bets, IResultCollection rc)
+		public BetterPageModule(ITournament tournament, ISubmittedBets bets, ILiveResultsCollection rc)
         {
             Get["/{better}"] = _ =>
             {
