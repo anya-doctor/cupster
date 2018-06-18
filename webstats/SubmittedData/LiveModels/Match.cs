@@ -3,27 +3,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
 namespace SubmittedData.LiveModels
-{
-    //    {
-    //    "venue": "Moscow",
-    //    "location": "Luzhniki Stadium",
-    //    "datetime": "2018-06-14T17:00:00.000-05:00",
-    //    "status": "in progress",
-    //    "home_team": {
-    //    "country": "Russia",
-    //    "code": "RUS",
-    //    "goals": 5
-    //},
-    //"away_team": {
-    //"country": "Saudi Arabia",
-    //"code": "KSA",
-    //"goals": 0
-    //},
-    //"winner": null,
-    //"winner_code": null,
-    //"home_team_events": [],
-    //"away_team_events": []
-    //}
+{    
     [JsonObject(NamingStrategyType = typeof(SnakeCaseNamingStrategy))]
     public class Match
     {
