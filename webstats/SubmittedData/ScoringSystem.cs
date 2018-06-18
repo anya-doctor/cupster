@@ -65,8 +65,11 @@ namespace SubmittedData
         // 1 point per correct match outcome (win/loss/draw)
         public int GetStageOneMatchScore()
         {
+			 int score = 0;
+		  if (_user.HasStageOne() && _actual.HasStageOne())
+            {
             var stageOne = _actual.GetStageOne();
-            int score = 0;
+           
             var userStageOne = _user.GetStageOne();
             for (int i = 0; i < userStageOne.results.Length; i++)
             {
@@ -77,6 +80,7 @@ namespace SubmittedData
 						score += Points.StageOneMatchOutcome;
                 }
             }
+		}
             return score;
         }
 
@@ -84,9 +88,13 @@ namespace SubmittedData
         // 2 points per correct position (winner/runner-up)
         public int GetQualifierScore()
         {
-            var stageOne = _actual.GetStageOne();
+            
             int score = 0;
-            var userStageOne = _user.GetStageOne();
+           
+			if (_user.HasStageOne() && _actual.HasStageOne())
+            {
+			var stageOne = _actual.GetStageOne();
+			 var userStageOne = _user.GetStageOne();
             for (int i = 0; i < userStageOne.winners.Length; i++)
             {
                 for (int j = 0; j < userStageOne.winners[i].Length; j++)
@@ -103,6 +111,7 @@ namespace SubmittedData
                 }
 		        
             }
+			}
             return score;
         }
 

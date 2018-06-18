@@ -177,7 +177,6 @@ round-of-16 = [ ""Brasil"", ""Tyskland"", ""Colombia"", ]
 ";
 		    string actualResults = @"[info]
 user = ""user1""
-[stage-one]
 [stage-two]
 round-of-16 = [ ""Brasil"", ""Nederland"", ""Colombia"", ]
 ";
