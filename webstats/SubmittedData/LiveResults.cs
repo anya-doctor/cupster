@@ -85,6 +85,10 @@ namespace SubmittedData
             var tomlBuilder = new StringBuilder();
             tomlBuilder.AppendLine("results = [");
             var winnersBuilder = new StringBuilder("winners = [");
+
+            if(Groups == null)
+                return;
+
             Groups.ToList().ForEach(g =>
             {
                 var matchCount = g.Matches.Count(m => m != null);
@@ -143,7 +147,9 @@ namespace SubmittedData
 
         public bool IsStageOneComplete()
         {
-            return Groups.All(g => (g.Teams.Count() * 2 - 2) == g.Matches.Count);
+            if (Groups == null)
+                return false;
+            return Groups.All(g => (g.Teams.Count() * 2 - 2) == g.Matches.Count(m => m != null));
         }
 
         public dynamic GetThirdPlaces()
