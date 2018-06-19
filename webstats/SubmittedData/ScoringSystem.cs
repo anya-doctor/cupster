@@ -77,10 +77,9 @@ namespace SubmittedData
                     {
                         var actual = actualScore.results[i][j].ToLower();
                         if (actual != "-" && userScore.results[i][j].ToLower() == actual)
-                            score += Points.StageOneMatchOutcome;
+                              score += Points.StageOneMatchOutcome;
                     }
                 }
-
             }
             return score;
         }
@@ -90,6 +89,7 @@ namespace SubmittedData
         public int GetQualifierScore()
         {
             int score = 0;
+
             if (_user.HasStageOne() && _actual.HasStageOne())
             {
                 var actualScore = _actual.GetStageOne();
@@ -108,9 +108,7 @@ namespace SubmittedData
                         if (team.Equals(actualScore.winners[i][j]))
                             score += Points.QualifyingPosition;
                     }
-
                 }
-
             }
             return score;
         }
