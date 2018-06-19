@@ -70,7 +70,7 @@ namespace Modules
             resultCollection.Previous.Load(ConfigurationManager.AppSettings["LiveResultsUrl"]);
 
             Task.Run(async () => { await resultCollection.UpdateResultsAsync(new TimeSpan(0, int.Parse(ConfigurationManager.AppSettings["LiveResultsInterval"]), 0)); });
-            container.Register<ILiveResultsCollection, LiveResultsCollection>(resultCollection);
+            container.Register<IResultCollection, LiveResultsCollection>(resultCollection);
         }
 
         protected override void ConfigureConventions(NancyConventions conventions)

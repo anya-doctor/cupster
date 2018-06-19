@@ -75,8 +75,7 @@ namespace SubmittedData
                 currentResults.ForEach(g => { if (g.Matches.Any()) g.Matches = groupMatches[g.Id].ToList(); });
 
                 Groups = currentResults;
-
-                BuildStageOne();
+                _stageOne = null;
             }
 
         }
@@ -136,6 +135,9 @@ namespace SubmittedData
 
         public dynamic GetStageOne()
         {
+            if(_stageOne == null)
+                BuildStageOne();
+
             return _stageOne;
         }
 
@@ -223,7 +225,7 @@ namespace SubmittedData
         {
             Timestamp = results.Timestamp;
             Groups = results.Groups;
-            BuildStageOne();
+            _stageOne = null;
         }
 
         public IEnumerable<Group> Groups { get; private set; }
