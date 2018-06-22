@@ -279,4 +279,7 @@ testrunner/
 
 nuget.exe
 .pytest_cache/
+
+/webstats/.vs/*
 .vscode/
+/data/wc2018-Anders.toml

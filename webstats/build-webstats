@@ -1,1 +1,2 @@
+export MONO_TLS_PROVIDER=btls
 xbuild /property:Configuration=Release

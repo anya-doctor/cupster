@@ -4,9 +4,9 @@ namespace SubmittedData
 	public class ResultCollection : IResultCollection
 	{
 
-		public Results Current { get; set; }
+		public IResults Current { get; set; }
 
-		public Results Previous { get; set; }
+		public IResults Previous { get; set; }
 	}
 }
 

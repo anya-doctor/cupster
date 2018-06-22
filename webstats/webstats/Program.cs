@@ -36,6 +36,7 @@ namespace webstats
             }
 
             host.Stop();
+            host.Dispose();
             Console.WriteLine("Server terminated");
         }
     }
