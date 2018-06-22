@@ -15,5 +15,4 @@ Build status: [![Build Status](https://travis-ci.org/lmno/cupster.svg?branch=mas
 - [x] Fetch results 
     - [x] Simple daily input, or
     - [x] Fetch updates from web service.  
-    REST API for results http://www.kimonolabs.com/worldcup/explorer
 - [ ] New client front-end (React?)
