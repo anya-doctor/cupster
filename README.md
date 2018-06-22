@@ -12,8 +12,7 @@ Build status: [![Build Status](https://travis-ci.org/lmno/cupster.svg?branch=mas
 - [x] Remove achivement assignment before results are entered
 - [x] Fix backend stage two match distribution. Include third-places.
 - [x] Add build and deploy with Travis CI
-- [ ] Fetch results 
+- [x] Fetch results 
     - [x] Simple daily input, or
-    - [ ] Fetch updates from web service.  
-    REST API for results http://www.kimonolabs.com/worldcup/explorer
+    - [x] Fetch updates from web service.  
 - [ ] New client front-end (React?)

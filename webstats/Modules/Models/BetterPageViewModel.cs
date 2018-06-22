@@ -21,6 +21,7 @@ namespace Modules
             _results = actual;
             _userScore = new ScoringSystem(bet, actual);
             _totalScore = new ScoringSystem(actual, actual);
+            _stageOneActual = _results.GetStageOne();
             CreateGroupMatches();
 			if (WorldCupRules)
 			{
@@ -36,6 +37,7 @@ namespace Modules
 				CreateEuroSemiFinalMatches();
 			}
             CreateFinalMatch();
+           
         }
 
 		public object Better
@@ -169,7 +171,9 @@ namespace Modules
         }
 
         List<KnockoutMatch> _final = new List<KnockoutMatch>();
-		public List<KnockoutMatch> Final
+        private dynamic _stageOneActual;
+
+        public List<KnockoutMatch> Final
 		{
 			get { return _final; }
 			private set { _final = value; }
@@ -205,7 +209,7 @@ namespace Modules
             k.SelectedMatch = _bet.GetStageOne().winners[i1][0] + " vs. " + _bet.GetStageOne().winners[i2][1];
             if (_bet.HasRound16())
                 k.SelectedWinner = _bet.GetRound16Winners()[i1].ToString();
-            k.ActualMatch = _results.GetStageOne().winners[i1][0] + " vs. " + _results.GetStageOne().winners[i2][1];
+            k.ActualMatch = _stageOneActual.winners[i1][0] + " vs. " + _stageOneActual.winners[i2][1];
             if (_results.HasRound16())
             {
                 k.ActualWinner = _results.GetRound16Winners()[i1].ToString();
@@ -226,7 +230,7 @@ namespace Modules
 			List<string> resultMatches = new List<string>();
 			if (_results.HasThirdPlaces())
 			{
-				resultMatches = GetListOfMatches(_results.GetStageOne().winners, _results.GetThirdPlaces());
+				resultMatches = GetListOfMatches(_stageOneActual.winners, _results.GetThirdPlaces());
 
 			}
 
@@ -458,7 +462,7 @@ namespace Modules
             foreach (object[] group in _tournament.GetGroups())
             {
                 dynamic stageOne = _bet.GetStageOne();
-                dynamic stageOneActual = _results.GetStageOne();
+                dynamic stageOneActual = _stageOneActual;
                 var g = new GroupMatches() { Name = "Group " + gn };
                 g.CreateMatches(group, stageOne.results[i], stageOneActual.results[i]);
                 g.AddQualifiers(stageOne.winners[i], stageOneActual.winners[i], stageOneActual.results[i]);

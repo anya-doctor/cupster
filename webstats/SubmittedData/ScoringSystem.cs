@@ -68,16 +68,18 @@ namespace SubmittedData
             int score = 0;
             if (_user.HasStageOne() && _actual.HasStageOne())
             {
-                for (int i = 0; i < _user.GetStageOne().results.Length; i++)
+                var actualScore = _actual.GetStageOne();
+                var userScore = _user.GetStageOne();
+
+                for (int i = 0; i < userScore.results.Length; i++)
                 {
-                    for (int j = 0; j < _user.GetStageOne().results[i].Length; j++)
+                    for (int j = 0; j < userScore.results[i].Length; j++)
                     {
-                        var actual = _actual.GetStageOne().results[i][j].ToLower();
-                        if (actual != "-" && _user.GetStageOne().results[i][j].ToLower() == actual)
-                            score += Points.StageOneMatchOutcome;
+                        var actual = actualScore.results[i][j].ToLower();
+                        if (actual != "-" && userScore.results[i][j].ToLower() == actual)
+                              score += Points.StageOneMatchOutcome;
                     }
                 }
-
             }
             return score;
         }
@@ -87,24 +89,26 @@ namespace SubmittedData
         public int GetQualifierScore()
         {
             int score = 0;
-            if (_user.HasStageOne())
+
+            if (_user.HasStageOne() && _actual.HasStageOne())
             {
-                for (int i = 0; i < _user.GetStageOne().winners.Length; i++)
+                var actualScore = _actual.GetStageOne();
+                var userScore = _user.GetStageOne();
+
+                for (int i = 0; i < userScore.winners.Length; i++)
                 {
-                    for (int j = 0; j < _user.GetStageOne().winners[i].Length; j++)
+                    for (int j = 0; j < userScore.winners[i].Length; j++)
                     {
-                        var team = _user.GetStageOne().winners[i][j];
-                        if (_actual.GetStageOne().winners[i][j] == "-")
+                        var team = userScore.winners[i][j];
+                        if (actualScore.winners[i][j] == "-")
                             continue;
-                        if (Array.IndexOf(_actual.GetStageOne().winners[i], team) != -1)
+                        if (Array.IndexOf(actualScore.winners[i], team) != -1)
                             score += Points.QualifyingTeam;
 
-                        if (team.Equals(_actual.GetStageOne().winners[i][j]))
+                        if (team.Equals(actualScore.winners[i][j]))
                             score += Points.QualifyingPosition;
                     }
-
                 }
-
             }
             return score;
         }
