@@ -5,8 +5,8 @@
 	</startup>
     <appSettings>
         <add key="DataPath" value="/usr/share/nginx/html/cupster/data" />
-        <add key="TournamentFile" value="euro2016.toml" />
-        <add key="ResultsFile" value="euro2016-actual.toml" />
+        <add key="TournamentFile" value="wc2018.toml" />
+        <add key="ResultsFile" value="wc2018-actual.toml" />
         <add key="LiveResultsUrl" value=""/>
         <add key="LiveResultsInterval" value=""/> 
     </appSettings>
