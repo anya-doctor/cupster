@@ -9,5 +9,7 @@
         <add key="ResultsFile" value="wc2018-actual.toml" />
         <add key="LiveResultsUrl" value=""/>
         <add key="LiveResultsInterval" value=""/> 
+        <add key="LiveResultsIntervalCurrent" value=""/>
+        <add key="LiveResultsIntervalPrevious" value=""/>
     </appSettings>
 </configuration>

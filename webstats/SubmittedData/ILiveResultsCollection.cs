@@ -12,7 +12,11 @@ namespace SubmittedData
 
         new ILiveResults Previous { get; set; }
 
+        new ILiveResults Backup { get; set; }
+
         Task UpdateResultsAsync(TimeSpan interval);
+        Task UpdateCurrentResultsAsync(TimeSpan interval);
+        Task UpdatePreviousResultsAsync(TimeSpan interval);
     }
 
 }

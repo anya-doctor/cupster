@@ -44,7 +44,8 @@ namespace Modules
             container.Register<ISubmittedBets, SubmittedBets>(bets);
 
             if (!string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["LiveResultsUrl"]) &&
-                !string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["LiveResultsInterval"]))
+                !string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["LiveResultsIntervalCurrent"]) &&
+                !string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["LiveResultsIntervalPrevious"]))
             {
                 RegisterLiveResultsCollection(container, tournament);
             }
@@ -64,12 +65,15 @@ namespace Modules
             var resultCollection = new LiveResultsCollection
             {
                 Current = new LiveResults(tournament),
-                Previous = new LiveResults(tournament)
+                Previous = new LiveResults(tournament),
+                Backup = new LiveResults(tournament)
             };
             resultCollection.Current.Load(ConfigurationManager.AppSettings["LiveResultsUrl"]);
             resultCollection.Previous.Load(ConfigurationManager.AppSettings["LiveResultsUrl"]);
+            resultCollection.Backup.Load(ConfigurationManager.AppSettings["LiveResultsUrl"]);
 
-            Task.Run(async () => { await resultCollection.UpdateResultsAsync(new TimeSpan(0, int.Parse(ConfigurationManager.AppSettings["LiveResultsInterval"]), 0)); });
+            Task.Run(async () => { await resultCollection.UpdateCurrentResultsAsync(new TimeSpan(0, int.Parse(ConfigurationManager.AppSettings["LiveResultsIntervalCurrent"]), 0)); });
+            Task.Run(async () => { await resultCollection.UpdatePreviousResultsAsync(new TimeSpan(0, int.Parse(ConfigurationManager.AppSettings["LiveResultsIntervalPrevious"]), 0)); });
             container.Register<IResultCollection, LiveResultsCollection>(resultCollection);
         }
 

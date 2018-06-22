@@ -5,6 +5,7 @@ namespace SubmittedData
 	{
 		IResults Current { get; set; }
 		IResults Previous { get; set; }
+		IResults Backup { get; set; }
 	}
 }
 
