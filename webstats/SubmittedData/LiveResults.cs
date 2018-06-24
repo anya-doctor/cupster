@@ -91,12 +91,15 @@ namespace SubmittedData
 
             Groups.ToList().ForEach(g =>
             {
-                var matchCount = g.Matches.Count(m => m != null);
                 tomlBuilder.Append("[");
                 winnersBuilder.Append("[");
                 for (var i = 0; i < g.Teams.Count() * 2 - 2; i++)
                 {
-                    tomlBuilder.Append(i < matchCount ? $"\"{g.Matches.ElementAt(i).ResultSign}\"," : $"\"-\",");
+                    if (g.Matches[i] != null)
+                        tomlBuilder.Append($"\"{g.Matches[i].ResultSign}\",");
+                    else
+                        tomlBuilder.Append($"\"-\",");
+                    
                     winnersBuilder.Append("\"-\",");
                 }
 
