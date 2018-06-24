@@ -7,14 +7,10 @@ namespace SubmittedData
     public class LiveResultsCollection : ILiveResultsCollection, IDisposable
     {
         private readonly CancellationTokenSource _cancellationTokenSource;
-        private readonly CancellationTokenSource _cancellationTokenSourceCurrent;
-        private readonly CancellationTokenSource _cancellationTokenSourcePrevious;
 
         public LiveResultsCollection()
         {
             _cancellationTokenSource = new CancellationTokenSource();
-            _cancellationTokenSourceCurrent = new CancellationTokenSource();
-            _cancellationTokenSourcePrevious = new CancellationTokenSource();
         }
 
         public ILiveResults Previous { get; set; }
@@ -53,26 +49,26 @@ namespace SubmittedData
 
         public async Task UpdateCurrentResultsAsync(TimeSpan interval)
         {
-            await Task.Delay(interval, _cancellationTokenSourceCurrent.Token);
+            await Task.Delay(interval, _cancellationTokenSource.Token);
             while (true)
             {
                 Console.WriteLine("{0:G}: Update current", DateTime.Now);
                 UpdateResults(Current);
-                await Task.Delay(interval, _cancellationTokenSourceCurrent.Token);
-                if (_cancellationTokenSourceCurrent.IsCancellationRequested)
+                await Task.Delay(interval, _cancellationTokenSource.Token);
+                if (_cancellationTokenSource.IsCancellationRequested)
                     break;
             }
         }
 
         public async Task UpdatePreviousResultsAsync(TimeSpan interval)
         {
-            await Task.Delay(interval, _cancellationTokenSourcePrevious.Token);
+            await Task.Delay(interval, _cancellationTokenSource.Token);
             while (true)
             {
                 Console.WriteLine("{0:G}: Update previous", DateTime.Now);
                 UpdateResults(Previous);
-                await Task.Delay(interval, _cancellationTokenSourcePrevious.Token);
-                if (_cancellationTokenSourcePrevious.IsCancellationRequested)
+                await Task.Delay(interval, _cancellationTokenSource.Token);
+                if (_cancellationTokenSource.IsCancellationRequested)
                     break;
             }
         }
@@ -107,10 +103,6 @@ namespace SubmittedData
         {
             _cancellationTokenSource.Cancel();
             _cancellationTokenSource.Dispose();
-            _cancellationTokenSourceCurrent.Cancel();
-            _cancellationTokenSourceCurrent.Dispose();
-            _cancellationTokenSourcePrevious.Cancel();
-            _cancellationTokenSourcePrevious.Dispose();
         }
 
     }

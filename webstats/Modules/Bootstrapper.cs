@@ -43,8 +43,7 @@ namespace Modules
             bets.LoadAll(dataPath);
             container.Register<ISubmittedBets, SubmittedBets>(bets);
 
-            if (!string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["LiveResultsUrl"]) &&
-                !string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["LiveResultsIntervalCurrent"]) &&
+            if (!string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["LiveResultsIntervalCurrent"]) &&
                 !string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["LiveResultsIntervalPrevious"]))
             {
                 RegisterLiveResultsCollection(container, tournament);
