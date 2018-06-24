@@ -56,6 +56,7 @@ namespace SubmittedData
             await Task.Delay(interval, _cancellationTokenSourceCurrent.Token);
             while (true)
             {
+                Console.WriteLine("{0:G}: Update current", DateTime.Now);
                 UpdateResults(Current);
                 await Task.Delay(interval, _cancellationTokenSourceCurrent.Token);
                 if (_cancellationTokenSourceCurrent.IsCancellationRequested)
@@ -68,6 +69,7 @@ namespace SubmittedData
             await Task.Delay(interval, _cancellationTokenSourcePrevious.Token);
             while (true)
             {
+                Console.WriteLine("{0:G}: Update previous", DateTime.Now);
                 UpdateResults(Previous);
                 await Task.Delay(interval, _cancellationTokenSourcePrevious.Token);
                 if (_cancellationTokenSourcePrevious.IsCancellationRequested)
