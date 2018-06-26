@@ -89,10 +89,10 @@ namespace SubmittedData
             if(Groups == null)
                 return;
 
+            // Build group results
             Groups.ToList().ForEach(g =>
             {
                 tomlBuilder.Append("[");
-                winnersBuilder.Append("[");
                 for (var i = 0; i < g.Teams.Count() * 2 - 2; i++)
                 {
                     if (g.Matches[i] != null)
@@ -100,18 +100,44 @@ namespace SubmittedData
                     else
                         tomlBuilder.Append($"\"-\",");
                     
-                    winnersBuilder.Append("\"-\",");
                 }
 
                 tomlBuilder.Append("],");
-                winnersBuilder.Append("],");
             });
             tomlBuilder.AppendLine("]");
+
+            // Build group winners
+            Groups.ToList().ForEach(g =>
+            {
+                winnersBuilder.Append("[");
+
+                if ((g.Teams.Count() * 2 - 2) == g.Matches.Count(m => m != null))
+                {
+                    winnersBuilder.Append($"\"{FixName(g.Teams.ElementAt(0).Country)}\",");
+                    winnersBuilder.Append($"\"{FixName(g.Teams.ElementAt(1).Country)}\",");
+                }
+                else
+                {
+                    winnersBuilder.Append($"\"-\",");
+                    winnersBuilder.Append($"\"-\",");
+                }
+                winnersBuilder.Append("],");
+            });
             winnersBuilder.AppendLine("]");
 
             tomlBuilder.AppendLine(winnersBuilder.ToString());
 
             _stageOne = tomlBuilder.ToString().ParseAsToml();
+        }
+
+        private string FixName(string team)
+        {
+            if (team == "Saudi Arabia")
+                team = "Saudia Arabia";
+            if (team == "Korea Republic")
+                team = "South Korea";
+
+            return team;
         }
 
         private bool IsCorrectMatch(Match match, string homeTeam, string awayTeam)
