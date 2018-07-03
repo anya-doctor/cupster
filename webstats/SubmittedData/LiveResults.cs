@@ -274,14 +274,19 @@ namespace SubmittedData
 
         public bool HasRound16()
         {
-            return Last16 != null && Last16.Count() == 8;
+            return Last16 != null && Last16.Count() > 0;
         }
 
         public dynamic GetRound16Winners()
         {
             if (_last16 == null)
             {
-                _last16 = Last16.Select(m => m.Winner).ToArray();
+                string[] ls = new string[8];
+                for (int i = 0; i < 8; i++)
+                {
+                    ls[i] = (i < Last16.Count()) ? Last16.ElementAt(i).Winner : "-";
+                }
+                _last16 = ls;
             }
 
             return _last16;
@@ -289,14 +294,19 @@ namespace SubmittedData
 
         public bool HasQuarterFinals()
         {
-            return Last8 != null && Last8.Count() == 4;
+            return Last8 != null && Last8.Count() > 0;
         }
 
         public dynamic GetQuarterFinalWinners()
         {
             if (_last8 == null)
             {
-                _last8 = Last8.Select(m => m.Winner).ToArray();
+                string[] ls = new string[4];
+                for (int i = 0; i < 4; i++)
+                {
+                    ls[i] = (i < Last8.Count()) ? Last8.ElementAt(i).Winner : "-";
+                }
+                _last8 = ls;
             }
 
             return _last8;
@@ -304,14 +314,19 @@ namespace SubmittedData
 
         public bool HasSemiFinals()
         {
-            return SemiFinals != null && SemiFinals.Count() == 2;
+            return SemiFinals != null && SemiFinals.Count() > 0;
         }
 
         public dynamic GetSemiFinalWinners()
         {
             if (_semiFinals == null)
             {
-                _semiFinals = SemiFinals.Select(m => m.Winner).ToArray();
+                string[] ls = new string[4];
+                for (int i = 0; i < 4; i++)
+                {
+                    ls[i] = (i < SemiFinals.Count()) ? SemiFinals.ElementAt(i).Winner : "-";
+                }
+                _semiFinals = ls;
             }
 
             return _semiFinals;
