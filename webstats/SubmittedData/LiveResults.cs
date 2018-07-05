@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 using SubmittedData.LiveModels;
 using Toml;
@@ -15,6 +16,9 @@ namespace SubmittedData
         private readonly ITournament _tournament;
         private readonly HttpClient _httpClient;
         private dynamic _stageOne;
+        private dynamic _last16;
+        private dynamic _last8;
+        private dynamic _semiFinals;
 
         public LiveResults(ITournament tournament)
         {
@@ -27,11 +31,32 @@ namespace SubmittedData
             if (!string.IsNullOrWhiteSpace(baseUrl))
                 _httpClient.BaseAddress = new Uri(baseUrl);
 
+            var resultTasks = new List<Task>();
+
+            if (!IsStageOneComplete())
+                resultTasks.Add(Task.Run( () => GetStageOneResults()));
+            if (!HasRound16())
+                resultTasks.Add(Task.Run(() => BuildLast16()));
+            if(!HasQuarterFinals())
+                resultTasks.Add(Task.Run(() => BuildLast8()));
+            if(!HasBronseFinal())
+                resultTasks.Add(Task.Run(() => BuildThirdPlacePlayoffs()));
+            if(!HasSemiFinals())
+                resultTasks.Add(Task.Run(() => BuildSemiFinals()));
+            if(!HasFinal())
+                resultTasks.Add(Task.Run(() => BuildFinals()));
+
+            Task.WaitAll(resultTasks.ToArray());
+        }
+
+        private void GetStageOneResults()
+        {
             var response = _httpClient.GetAsync("worldcups/2018/results").Result;
 
             if (response.IsSuccessStatusCode)
             {
-                var liveResults = JsonConvert.DeserializeObject<IEnumerable<Group>>(response.Content.ReadAsStringAsync().Result);
+                var liveResults =
+                    JsonConvert.DeserializeObject<IEnumerable<Group>>(response.Content.ReadAsStringAsync().Result);
 
                 //order matches based on this layout
 
@@ -72,13 +97,59 @@ namespace SubmittedData
                     groupLetter++;
                 }
 
-                currentResults.ForEach(g => { if (g.Matches.Any()) g.Matches = groupMatches[g.Id].ToList(); });
+                currentResults.ForEach(g =>
+                {
+                    if (g.Matches.Any()) g.Matches = groupMatches[g.Id].ToList();
+                });
 
                 Groups = currentResults;
                 _stageOne = null;
             }
-
         }
+
+        private void BuildFinals()
+        {
+            Final = GetCupStage<Match>("worldcups/2018/results/final");
+        }
+
+        private void BuildThirdPlacePlayoffs()
+        {
+            ThirdPlacePlayoff = GetCupStage<Match>("worldcups/2018/results/thirdplace");
+        }
+
+        private void BuildSemiFinals()
+        {
+            SemiFinals = GetCupStage<IEnumerable<Match>>("worldcups/2018/results/semifinals");
+            if(SemiFinals != null)
+                _semiFinals = null;
+        }
+
+        private void BuildLast8()
+        {
+            Last8 = GetCupStage<IEnumerable<Match>>("worldcups/2018/results/last8");
+            if(Last8 != null)
+                _last8 = null;
+        }
+
+        private void BuildLast16()
+        {
+            Last16 = GetCupStage<IEnumerable<Match>>("worldcups/2018/results/last16");
+            if(Last16 != null)
+                _last16 = null;
+        }
+
+        private T GetCupStage<T>(string resource)
+        {
+            var response = _httpClient.GetAsync(resource).Result;
+
+            if (response.IsSuccessStatusCode)
+            {
+                return JsonConvert.DeserializeObject<T>(response.Content.ReadAsStringAsync().Result);
+            }
+
+            return default(T);
+        }
+
 
         private void BuildStageOne()
         {
@@ -198,62 +269,96 @@ namespace SubmittedData
 
         public bool HasStageTwo()
         {
-            return false; //TODO
+            return false;
         }
 
         public bool HasRound16()
         {
-            return false; //TODO
+            return Last16 != null && Last16.Count() > 0;
         }
 
         public dynamic GetRound16Winners()
         {
-            return null; //TODO
+            if (_last16 == null)
+            {
+                string[] ls = new string[8];
+                for (int i = 0; i < 8; i++)
+                {
+                    ls[i] = (i < Last16.Count()) ? Last16.ElementAt(i).Winner : "-";
+                }
+                _last16 = ls;
+            }
+
+            return _last16;
         }
 
         public bool HasQuarterFinals()
         {
-            return false; //TODO
+            return Last8 != null && Last8.Count() > 0;
         }
 
         public dynamic GetQuarterFinalWinners()
         {
-            return null; //TODO
+            if (_last8 == null)
+            {
+                string[] ls = new string[4];
+                for (int i = 0; i < 4; i++)
+                {
+                    ls[i] = (i < Last8.Count()) ? Last8.ElementAt(i).Winner : "-";
+                }
+                _last8 = ls;
+            }
+
+            return _last8;
         }
 
         public bool HasSemiFinals()
         {
-            return false; //TODO
+            return SemiFinals != null && SemiFinals.Count() > 0;
         }
 
         public dynamic GetSemiFinalWinners()
         {
-            return null; //TODO
+            if (_semiFinals == null)
+            {
+                string[] ls = new string[4];
+                for (int i = 0; i < 4; i++)
+                {
+                    ls[i] = (i < SemiFinals.Count()) ? SemiFinals.ElementAt(i).Winner : "-";
+                }
+                _semiFinals = ls;
+            }
+
+            return _semiFinals;
         }
 
         public List<string> GetBronseFinalists()
         {
-            return null; //TODO
+            return new List<string>
+            {
+                ThirdPlacePlayoff.HomeTeam.Country,
+                ThirdPlacePlayoff.AwayTeam.Country
+            };
         }
 
         public bool HasBronseFinal()
         {
-            return false; //TODO
+            return ThirdPlacePlayoff != null;
         }
 
         public string GetBronseFinalWinner()
         {
-            return null; //TODO
+            return ThirdPlacePlayoff.Winner;
         }
 
         public bool HasFinal()
         {
-            return false; //TODO
+            return Final != null;
         }
 
         public string GetFinalWinner()
         {
-            return null; //TODO
+            return Final.Winner;
         }
 
         public void Copy(ILiveResults results)
@@ -261,8 +366,26 @@ namespace SubmittedData
             Timestamp = results.Timestamp;
             Groups = results.Groups;
             _stageOne = null;
+
+            Last16 = results.Last16;
+            _last16 = null;
+
+            Last8 = results.Last8;
+            _last8 = null;
+
+            SemiFinals = results.SemiFinals;
+            _semiFinals = null;
+
+            ThirdPlacePlayoff = results.ThirdPlacePlayoff;
+
+            Final = results.Final;
         }
 
+        public Match Final { get; private set; }
+        public Match ThirdPlacePlayoff { get; private set; }
+        public IEnumerable<Match> SemiFinals { get; private set; }
+        public IEnumerable<Match> Last8 { get; private set; }
+        public IEnumerable<Match> Last16 { get; private set; }
         public IEnumerable<Group> Groups { get; private set; }
         public DateTime Timestamp { get; private set; }
     }
